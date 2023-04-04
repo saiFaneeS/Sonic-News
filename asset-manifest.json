@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/SonicNews/static/css/main.ae840f84.css",
+    "main.js": "/SonicNews/static/js/main.85ee805a.js",
+    "static/js/787.c1112931.chunk.js": "/SonicNews/static/js/787.c1112931.chunk.js",
+    "static/media/loading.gif": "/SonicNews/static/media/loading.b81c62121e4c70b6f545.gif",
+    "index.html": "/SonicNews/index.html",
+    "main.ae840f84.css.map": "/SonicNews/static/css/main.ae840f84.css.map",
+    "main.85ee805a.js.map": "/SonicNews/static/js/main.85ee805a.js.map",
+    "787.c1112931.chunk.js.map": "/SonicNews/static/js/787.c1112931.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ae840f84.css",
+    "static/js/main.85ee805a.js"
+  ]
+}
