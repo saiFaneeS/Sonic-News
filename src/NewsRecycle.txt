@@ -1,0 +1,108 @@
+import { NewsItem } from './NewsItem';
+import React from 'react';
+import { Component } from 'react';
+import Spinner from './Spinner';
+
+export class News extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            articles: [],
+            loading: true,
+            page: 1
+        }
+    }
+
+    async updateNews() {
+        const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=cb0518be7fbc45c8a7054582a348f6d9&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+        this.setState({ loading: true })
+        let data = await fetch(url);
+        let parsedData = await data.json()
+        this.setState({
+            articles: parsedData.articles,
+            totalResults: parsedData.totalResults,
+            loading: false,
+        });
+        console.log(this.state.page);
+    }
+
+    async componentDidMount() {
+        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=cb0518be7fbc45c8a7054582a348f6d9&page=1&pageSize=${this.props.pageSize}`;
+        // this.setState({ loading: true })
+        // let data = await fetch(url);
+        // let parsedData = await data.json()
+        // this.setState({
+        //     articles: parsedData.articles,
+        //     totalResults: parsedData.totalResults,
+        //     loading: false,
+        // });
+        this.updateNews()
+    }
+
+    handlePrevious = async () => {
+        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=cb0518be7fbc45c8a7054582a348f6d9&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+        // this.setState({ loading: true })
+        // let data = await fetch(url);
+        // let parsedData = await data.json()
+        // this.setState({
+        //     articles: parsedData.articles,
+        //     page: this.state.page - 1,
+        //     loading: false,
+        // });
+        await this.setState({
+            page: this.state.page - 1
+        });
+        this.updateNews()
+    }
+
+    handleNext = async () => {
+        // if (this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)) {
+        // } else {
+        //     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=cb0518be7fbc45c8a7054582a348f6d9&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+        //     this.setState({ loading: true })
+        //     let data = await fetch(url);
+        //     let parsedData = await data.json()
+        //     this.setState({
+        //         articles: parsedData.articles,
+        //         page: this.state.page + 1,
+        //         loading: false,
+        //     });
+        // }
+        await this.setState({
+                page: this.state.page + 1
+            });
+            this.updateNews()
+    }
+
+    render() {
+        return (
+
+            <div className='container '>
+
+                <h1 className="my-4 text-center">Sonic News - Top Headlines</h1>
+
+                <div className='arrs container my-4'>
+                    <button type="button" disabled={this.state.page <= 1} onClick={this.handlePrevious} className="btn btn-dark mx-2">&larr; Previous</button>
+                    <button type="button" disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} onClick={this.handleNext} className="btn btn-dark mx-2">Next &rarr;</button>
+                </div>
+
+                {this.state.loading && <Spinner />}
+
+                <div className="row">
+                    {!this.state.loading && this.state.articles.map((element) => {
+                        return <div className="my-2 col-md-4" key={element.url}>
+                            <NewsItem title={element.title ? element.title.slice() : ""} description={element.description ? element.description.slice(0, 150) : ""} imgUrl={element.urlToImage ? element.urlToImage : ""} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name} />
+                        </div>
+                    })}
+                </div>
+
+                <div className='arrs container my-4'>
+                    <button type="button" disabled={this.state.page <= 1} onClick={this.handlePrevious} className="btn btn-dark mx-2">&larr; Previous</button>
+                    <button type="button" disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / this.props.pageSize)} onClick={this.handleNext} className="btn btn-dark mx-2">Next &rarr;</button>
+                </div>
+
+            </div>
+        )
+    }
+}
